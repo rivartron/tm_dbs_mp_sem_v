@@ -1,3 +1,10 @@
+CREATE TABLE `travel_management_schema`.`Admins` (
+  `idAdmin` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(16) NOT NULL,
+  `password` VARCHAR(72) NOT NULL,
+  `name` VARCHAR(60) NOT NULL,
+  PRIMARY KEY (`idAdmin`));
+
 CREATE TABLE `travel_management_schema`.`Users` (
   `idUser` INT NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(255) NOT NULL,
@@ -67,10 +74,12 @@ CREATE TABLE `travel_management_schema`.`Journey` (
   `idBus` INT NOT NULL,
   `idRoute` INT NOT NULL,
   `idDriver` INT NOT NULL,
+  `idAdmin` INT NOT NULL,
   PRIMARY KEY (`idJourney`),
   FOREIGN KEY (`idRoute`) REFERENCES `Routes`(`idRoute`),
   FOREIGN KEY (`idDriver`) REFERENCES `Drivers`(`idDriver`),
-  FOREIGN KEY (`idBus`) REFERENCES `Buses`(`idBus`));
+  FOREIGN KEY (`idBus`) REFERENCES `Buses`(`idBus`),
+  FOREIGN KEY (`idAdmin`) REFERENCES `Admins`(`idAdmin`));
 
 CREATE TABLE `travel_management_schema`.`PaymentDetails` (
   `idPaymentDetails` INT NOT NULL AUTO_INCREMENT,

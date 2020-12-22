@@ -95,4 +95,73 @@ create procedure addDriver (nameIn varchar(60), age int, mobileIn varchar(15), a
 	insert into Drivers (nameDriver,age,mobile_number,addressDriver,city,license_number,aadhaar_number,experience) values (nameIn, age, mobileIn, addressIn, city, licenseNum, aadhaarNo, experience);
 end //
 
+create procedure newBooking (userId int) begin
+	insert into PaymentDetails (statusPayment, methodPayment, idUser)
+    values ("FAILED", "CASH", userId);
+    
+    set @idPayDetail = last_insert_id();
+    
+    insert into Payments (timestampPayment, amountPayment, idPaymentDetails)
+    values (now(), 0, @idPayDetail);
+    
+    set @idPayment = last_insert_id();
+    
+    insert into Bookings (passengers, fareTotal, statusBooking, timestampBooking, idPayment, idUser)
+    values (0, 0, "Not-Confirmed", now(), @idPayment, userId);
+    
+    set @idBooking = last_insert_id();
+    
+    select userId, @idBooking, @idPayment, @idPayDetail;
+end //
+
+create procedure addPassenger (bookingId int, journeyId int, namePass varchar(60), agePass int, genPass varchar(6), aadhaarNo varchar(12), sourceCity varchar(20), destCity varchar(20), acPref varchar(6)) begin
+	
+    set @routeId = (select idRoute from Journey where idJourney=journeyId);
+    
+    set @busType = (select idType from Buses where idBus=(select Journey.idBus from Journey where idJourney=journeyId));
+    set @acfare = (select cost_AC from BusTypes where idType=@busType);
+    set @nonacfare = (select cost_nonAC from BusTypes where idType=@busType);
+    
+    set @distance = (select distanceFromSource from Stops where idRoute=@routeId and Stops.idCity=(select Cities.idCity from Cities where nameCity=sourceCity)) - (select distanceFromSource from Stops where idRoute=@routeId and idCity=(select Cities.idCity from Cities where nameCity=destCity));
+    
+    if acPref = "AC" then
+		set @fare = @acfare;
+	else
+		set @fare = @nonacfare;
+	end if;
+    
+    insert into Passengers (namePassenger, age, gender, fromCity, toCity, ACtype, farePassenger, aadhaar_number, idBooking, idJourney)
+    values (namePass, agePass, genPass, sourceCity, destCity, acPref, @fare, aadhaarNo, bookingId, journeyId);
+    
+    update Bookings set passengers = passengers + 1, fareTotal = fareTotal + @fare, timestampBooking = now()
+    where idBooking = bookingId;
+    
+end //
+
+create procedure updatePayment (bookingId int) begin
+	update Payments set timestampPayment = now(), amountPayment = (select fareTotal from Bookings where idBooking = bookingId)
+    where idPayment = (select Bookings.idPayment from Bookings where idBooking = bookingId);
+end //
+
+create procedure paymentSuccess (paymentId int, payMethod varchar(16)) begin
+	update Payments set timestampPayment = now()
+    where idPayment = paymentId;
+    update PaymentDetails set statusPayment = "PAID", methodPayment = payMethod
+    where idPaymentDetails = (select Payments.idPaymentDetails from Payments where idPayment = paymentId);
+end //
+
+create procedure paymentReversed (paymentId int, payMethod varchar(16)) begin
+	update Payments set timestampPayment = now()
+    where idPayment = paymentId;
+	update PaymentDetails set statusPayment = "REVERSED", methodPayment = payMethod
+    where idPaymentDetails = (select Payments.idPaymentDetails from Payments where idPayment = paymentId);
+end //
+
+create procedure paymentFailed (paymentId int, payMethod varchar(16)) begin
+	update Payments set timestampPayment = now()
+    where idPayment = paymentId;
+	update PaymentDetails set statusPayment = "FAILED", methodPayment = payMethod
+    where idPaymentDetails = (select Payments.idPaymentDetails from Payments where idPayment = paymentId);
+end //
+
 delimiter ;

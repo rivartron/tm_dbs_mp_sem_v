@@ -32,10 +32,10 @@ insert into `travel_management_schema`.Users values (null,"user5@fakemail.com","
 
 #Drivers
 
-insert into `travel_management_schema`.Drivers values (2001,"Driver Name1",31,"9786543220","Shaitan Galli Khatra Mehel 453234","Bhootnagar","MH202019876547","123456789101",'lvl2');
-insert into `travel_management_schema`.Drivers values (null,"Driver Name2",36,"9784569223","Shaitan Galli Khatra Mehel 453234","Bhootnagar","MH202019876547","123456789101",'lvl3');
-insert into `travel_management_schema`.Drivers values (null,"Driver Name3",27,"9783512237","Shaitan Galli Khatra Mehel 453234","Bhootnagar","MH202019876547","123456789101",'lvl1');
-insert into `travel_management_schema`.Drivers values (null,"Driver Name4",29,"9785547220","Shaitan Galli Khatra Mehel 453234","Bhootnagar","MH202019876547","123456789101",'lvl2');
+insert into `travel_management_schema`.Drivers values (2001,"Driver Name1",31,"9786543220","Shaitan Galli Khatra Mehel 453234","Bhootnagar","MH202019876547","123456781101",'lvl2');
+insert into `travel_management_schema`.Drivers values (null,"Driver Name2",36,"9784569223","Shaitan Galli Khatra Mehel 453234","Bhootnagar","MH202019876557","123456782101",'lvl3');
+insert into `travel_management_schema`.Drivers values (null,"Driver Name3",27,"9783512237","Shaitan Galli Khatra Mehel 453234","Bhootnagar","MH202019876567","123456783101",'lvl1');
+insert into `travel_management_schema`.Drivers values (null,"Driver Name4",29,"9785547220","Shaitan Galli Khatra Mehel 453234","Bhootnagar","MH202019876577","123456784101",'lvl2');
 
 #Cities
 
@@ -46,16 +46,16 @@ insert into `travel_management_schema`.Cities values (null,"City4");
 
 #Routes
 
-insert into `travel_management_schema`.Routes values (201,259,"City1-City2-City4-City3");
-insert into `travel_management_schema`.Routes values (null,259,"City3-City4-City2-City1");
+insert into `travel_management_schema`.Routes values (201,260,"City1-City2-City4-City3");
+insert into `travel_management_schema`.Routes values (null,260,"City3-City4-City2-City1");
 
 #Stops
 
-insert into `travel_management_schema`.Stops values (501,301,201,1);
-insert into `travel_management_schema`.Stops values (null,302,201,2);
-insert into `travel_management_schema`.Stops values (null,303,201,4);
-insert into `travel_management_schema`.Stops values (null,304,201,3);
-insert into `travel_management_schema`.Stops values (null,303,202,1);
-insert into `travel_management_schema`.Stops values (null,304,202,2);
-insert into `travel_management_schema`.Stops values (null,302,202,3);
-insert into `travel_management_schema`.Stops values (null,301,202,4);
+insert into `travel_management_schema`.Stops values (501,301,201,1,0);
+insert into `travel_management_schema`.Stops values (null,302,201,2,122);
+insert into `travel_management_schema`.Stops values (null,303,201,3,206);
+insert into `travel_management_schema`.Stops values (null,304,201,4,260);
+insert into `travel_management_schema`.Stops values (null,304,202,1,0);
+insert into `travel_management_schema`.Stops values (null,303,202,2,54);
+insert into `travel_management_schema`.Stops values (null,302,202,3,138);
+insert into `travel_management_schema`.Stops values (null,301,202,4,260);

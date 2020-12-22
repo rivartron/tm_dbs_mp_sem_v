@@ -3,7 +3,7 @@ CREATE TABLE travel_management_schema.Admins (
     username VARCHAR(16) UNIQUE NOT NULL,
     passwordHash VARCHAR(72) NOT NULL,
     nameAdmin VARCHAR(60) NOT NULL,
-    PRIMARY KEY (idAdmin)
+    PRIMARY KEY (idAdmin)    
 );
 CREATE TABLE travel_management_schema.Users (
     idUser INT NOT NULL AUTO_INCREMENT,
@@ -23,8 +23,8 @@ CREATE TABLE travel_management_schema.Drivers (
     mobile_number VARCHAR(15) NOT NULL,
     addressDriver VARCHAR(60) NOT NULL,
     city VARCHAR(20) NOT NULL,
-    license_number VARCHAR(15) NOT NULL,
-    aadhaar_number VARCHAR(12) NOT NULL,
+    license_number VARCHAR(15) UNIQUE NOT NULL,
+    aadhaar_number VARCHAR(12) UNIQUE NOT NULL,
     experience ENUM('lvl1', 'lvl2', 'lvl3') NOT NULL,
     PRIMARY KEY (idDriver)
 );
@@ -41,7 +41,7 @@ CREATE TABLE travel_management_schema.BusTypes (
 );
 CREATE TABLE travel_management_schema.Buses (
     idBus INT NOT NULL AUTO_INCREMENT,
-    reg_number_bus VARCHAR(10) NOT NULL,
+    reg_number_bus VARCHAR(10) UNIQUE NOT NULL,
     idType INT NOT NULL,
     odometer_read INT NOT NULL,
     PRIMARY KEY (idBus),
@@ -63,9 +63,12 @@ CREATE TABLE travel_management_schema.Stops (
     idCity INT NOT NULL,
     idRoute INT NOT NULL,
     stopNumber INT NOT NULL,
+    distanceFromSource INT NOT NULL,
     PRIMARY KEY (idStop),
     FOREIGN KEY (idCity) REFERENCES Cities (idCity),
-    FOREIGN KEY (idRoute) REFERENCES Routes (idRoute)
+    FOREIGN KEY (idRoute) REFERENCES Routes (idRoute),
+    CHECK(distanceFromSource > 0 OR stopNumber = 1),
+    CHECK(stopNumber >= 0)
 );
 CREATE TABLE travel_management_schema.Journey (
     idJourney INT NOT NULL AUTO_INCREMENT,
